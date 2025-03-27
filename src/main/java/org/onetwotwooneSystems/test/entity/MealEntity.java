@@ -37,5 +37,5 @@ public class MealEntity {
     private Integer carbohydrates;
 
     @OneToMany(mappedBy = "mealEntity")
-    private Set<MealsHistoryEntity> mealsHistoryEntity = new HashSet<>();
+    private Set<MealsHistoryEntity> mealsHistory = new HashSet<>();
 }

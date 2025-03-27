@@ -15,7 +15,7 @@ public interface MealsHistoryRepository extends JpaRepository<MealsHistoryEntity
     @Query("select m from MealsHistoryEntity m where m.userEntity.id = ?1 order by m.dateTime")
     List<MealsHistoryEntity> findAllByUserId(UUID userId);
 
-    @Query("select m from MealsHistoryEntity m where m.userEntity.id = ?1 and cast(?2 as date) < m.dateTime")
+    @Query("select m from MealsHistoryEntity m where m.userEntity.id = ?1 and cast(?2 as date) = cast(m.dateTime as date) order by m.dateTime")
     List<MealsHistoryEntity> findAllByUserIdAndDate(UUID userId, LocalDateTime localDateTime);
 
 }

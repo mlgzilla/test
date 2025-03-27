@@ -21,9 +21,11 @@ public class MealsHistoryEntity {
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
     @ManyToOne
+    @JoinColumn(name = "meal_id")
     private MealEntity mealEntity;
 
     @NotNull

@@ -96,12 +96,13 @@ public class MealServiceImpl implements MealService {
             StringBuffer mealHistoryResponse = new StringBuffer(MEAL_HISTORY_START);
             for (Map.Entry<LocalDate, List<MealsHistoryEntity>> entry : dailyMealsHistory.entrySet()) {
                 mealHistoryResponse
+                        .append("\n")
                         .append(entry.getKey())
                         .append("\n");
                 for (MealsHistoryEntity meal : entry.getValue()) {
                     mealHistoryResponse
                             .append(meal.getMealEntity().getName())
-                            .append(" ")
+                            .append(", кол-во: ")
                             .append(meal.getMealAmount())
                             .append("\n");
                 }
@@ -121,7 +122,7 @@ public class MealServiceImpl implements MealService {
             for (MealsHistoryEntity meal : todaysMealHistory) {
                 mealHistoryResponse
                         .append(meal.getMealEntity().getName())
-                        .append(" ")
+                        .append(", кол-во: ")
                         .append(meal.getMealAmount())
                         .append("\n");
             }

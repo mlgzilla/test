@@ -13,7 +13,7 @@ import org.onetwotwooneSystems.test.model.MealResponseDto;
 public abstract class MealMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "mealsHistoryEntity", ignore = true)
+    @Mapping(target = "mealsHistory", ignore = true)
     public abstract MealEntity toMealEntity(MealRequestDto mealRequestDto);
 
     public abstract MealResponseDto toMealResponse(MealEntity mealEntity);
