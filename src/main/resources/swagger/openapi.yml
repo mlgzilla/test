@@ -1,0 +1,395 @@
+openapi: 3.0.3
+
+info:
+  title: test - OpenAPI 3.0
+  version: 1.0.0
+
+tags:
+  - name: test
+    description: Сервис для отслеживания дневной нормы калорий пользователя и учета съеденных блюд
+
+paths:
+  /user/{id}:
+    get:
+      tags:
+        - test
+      description: Получение пользователя по id
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: id пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+  /user/checkDailyTarget/{id}:
+    get:
+      tags:
+        - test
+      description: Проверка, уложился ли пользователь в свою дневную норму калорий
+      operationId: getDailyTargetProgress
+      parameters:
+        - name: id
+          in: path
+          description: id пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 'Для выполнения дневной нормы осталось потребить 1550 каллорий'
+  /user:
+    post:
+      tags:
+        - test
+      description: Создание пользователя
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: bad request
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  type: string
+  /meal/{id}:
+    get:
+      tags:
+        - test
+      description: Получение блюда по id
+      operationId: getMealById
+      parameters:
+        - name: id
+          in: path
+          description: id блюда
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealResponse'
+  /meal/all:
+    get:
+      tags:
+        - test
+      description: Получение списка всех блюд
+      operationId: getAllMeals
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MealResponse'
+  /meal:
+    post:
+      tags:
+        - test
+      description: Добавление блюда
+      operationId: createMeal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealRequest'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MealResponse'
+        400:
+          description: bad request
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  type: string
+  /meal/history/today/{id}:
+    get:
+      tags:
+        - test
+      description: Получение отчета за день
+      operationId: getMealHistoryToday
+      parameters:
+        - name: id
+          in: path
+          description: id пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+  /meal/history/{id}:
+    get:
+      tags:
+        - test
+      description: Получение истории питания по дням
+      operationId: getMealHistory
+      parameters:
+        - name: id
+          in: path
+          description: id пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+  /meal/history/add:
+    post:
+      tags:
+        - test
+      description: Добавление приема пищи
+      operationId: createMealHistory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MealHistoryRequest'
+      responses:
+        200:
+          description: successful operation
+          content: { }
+        400:
+          description: bad request
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                type: array
+                items:
+                  type: string
+
+components:
+  schemas:
+    UserResponse:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - age
+        - weight
+        - height
+        - target
+        - dailyTarget
+      properties:
+        id:
+          description: Id пользователя
+          type: string
+          format: uuid
+          example: 'dafe34b9-3405-426a-ad02-243f7856d6d5'
+        name:
+          description: Имя пользователя
+          type: string
+          example: 'Иван'
+        email:
+          description: Email
+          type: string
+          format: email
+          example: 'ivanemail@mailivan.com'
+        age:
+          description: Возраст пользователя
+          type: integer
+          example: 25
+        weight:
+          description: Вес пользователя, кг.
+          type: integer
+          example: 75
+        height:
+          description: Рост пользователя, см.
+          type: integer
+          example: 180
+        target:
+          description: Цель пользователя
+          type: string
+          example: 'Похудение'
+        dailyTarget:
+          description: Дневная норма каллорий
+          type: integer
+          example: 1500
+    UserRequest:
+      type: object
+      required:
+        - name
+        - email
+        - age
+        - weight
+        - height
+        - target
+      properties:
+        name:
+          description: Имя пользователя
+          type: string
+          example: 'Иван'
+        email:
+          description: Email
+          type: string
+          format: email
+          example: 'ivanemail@mailivan.com'
+        age:
+          description: Возраст пользователя
+          type: integer
+          example: 25
+          maximum: 100
+          minimum: 18
+        weight:
+          description: Вес пользователя, кг.
+          type: integer
+          example: 75
+          maximum: 200
+          minimum: 45
+        height:
+          description: Рост пользователя, см.
+          type: integer
+          example: 180
+          minimum: 140
+          maximum: 250
+        target:
+          description: Цель пользователя
+          type: string
+          example: LOSS
+    MealResponse:
+      type: object
+      required:
+        - id
+        - name
+        - calories
+        - proteins
+        - fats
+        - carbohydrates
+      properties:
+        id:
+          description: Id блюда
+          type: string
+          format: uuid
+          example: 'dafe34b9-3405-426a-ad02-243f7856d6d5'
+        name:
+          description: Имя блюда
+          type: string
+          example: 'Шаурма'
+        calories:
+          description: Каллорийность блюда, Ккал.
+          type: integer
+          example: 1500
+        proteins:
+          description: Количество протеинов в блюде, грамм
+          type: integer
+          example: 75
+        fats:
+          description: Количество жиров в блюде, грамм
+          type: integer
+          example: 60
+        carbohydrates:
+          description: Количество углеводов в блюде, грамм
+          type: integer
+          example: 50
+    MealRequest:
+      type: object
+      required:
+        - name
+        - calories
+        - proteins
+        - fats
+        - carbohydrates
+      properties:
+        name:
+          description: Имя блюда
+          type: string
+          example: 'Шаурма'
+        calories:
+          description: Каллорийность блюда, Ккал.
+          type: integer
+          example: 150
+          minimum: 1
+          maximum: 1000
+        proteins:
+          description: Количество протеинов в блюде, грамм
+          type: integer
+          example: 75
+          minimum: 0
+          maximum: 50
+        fats:
+          description: Количество жиров в блюде, грамм
+          type: integer
+          example: 60
+          minimum: 0
+          maximum: 50
+        carbohydrates:
+          description: Количество углеводов в блюде, грамм
+          type: integer
+          example: 50
+          minimum: 0
+          maximum: 50
+    MealHistoryRequest:
+      type: object
+      required:
+        - userId
+        - mealList
+      properties:
+        userId:
+          description: Id пользователя
+          type: string
+          format: uuid
+          example: 'dafe34b9-3405-426a-ad02-243f7856d6d5'
+        mealList:
+          type: array
+          items:
+            type: object
+            properties:
+              mealId:
+                description: Id блюда
+                type: string
+                format: uuid
+                example: 'e34c2fc3-c2b0-47a0-9b7c-bc9283fdcc17'
+              mealAmount:
+                description: Количество блюд за прием
+                type: integer
+                example: 2
+                maximum: 10
+                minimum: 1
